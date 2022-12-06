@@ -1,0 +1,8 @@
+allow_unknown: true
+use_dijkstra : false
+use_quadratic: true
+use_grid_path: false
+old_navfn_behavior: false
+cost_factor: 0.8
+neutral_cost: 70
+lethal_cost: 253
