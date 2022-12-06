@@ -1,32 +1,32 @@
 <?xml version="1.0"?>
 <launch>
     <arg name="use_amcl" default="true"/>
-    <arg name="new_path" default="/home/rovit/ta-zul/src/rovid_1/bagfiles/"/>
+    <arg name="new_path" default="/home/rovit/ta-zul/src/rovid-2/bagfiles/"/>
     <arg name="use_filebag" default="false"/>
     <arg name="use_autonav" default="false"/>
 
-    <arg name="map_file" value="$(find rovid_1)/maps/map_lobbyandhall_stairs.yaml"/>
+    <arg name="map_file" value="$(find rovid-2)/maps/map_lobbyandhall_stairs.yaml"/>
     <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)"/>
 
-    <include file="$(find rovid_1)/launch/tf/tf_transforms.launch"/>
-    <include file="$(find rovid_1)/launch/tf/tf_marvelmind.launch"/>
+    <include file="$(find rovid-2)/launch/tf/tf_transforms.launch"/>
+    <include file="$(find rovid-2)/launch/tf/tf_marvelmind.launch"/>
     
-    <include file="$(find rovid_1)/launch/Localization/AMCL/amcl.launch" if="$(arg use_amcl)"/>
-    <include file="$(find rovid_1)/launch/Localization/EKF/Marvelmind/marvelmind.launch"/> 
-    <include file="$(find rovid_1)/launch/Localization/odom.launch">
+    <include file="$(find rovid-2)/launch/Localization/AMCL/amcl.launch" if="$(arg use_amcl)"/>
+    <include file="$(find rovid-2)/launch/Localization/EKF/Marvelmind/marvelmind.launch"/> 
+    <include file="$(find rovid-2)/launch/Localization/odom.launch">
         <arg name="use_odom_tf" value="false"/>
         <arg name="use_filebag" value="$(arg use_filebag)"/>
     </include>
 
-    <include file="$(find rovid_1)/launch/Localization/AMCL/Lidar/lidar2d.launch" unless="$(arg use_filebag)"/>
+    <include file="$(find rovid-2)/launch/Localization/AMCL/Lidar/lidar2d.launch" unless="$(arg use_filebag)"/>
     
-    <include file="$(find rovid_1)/launch/Localization/EKF/IMU/imu_fusion.launch">
+    <include file="$(find rovid-2)/launch/Localization/EKF/IMU/imu_fusion.launch">
         <arg name="use_mpu" value="true"/>
         <arg name="use_madgwick" value="false"/>
         <arg name="use_complementary" value="false"/>
     </include>
 
-    <include file="$(find rovid_1)/launch/Visualization/visualization_localization.launch" unless="$(arg use_autonav)"/>
+    <include file="$(find rovid-2)/launch/Visualization/visualization_localization.launch" unless="$(arg use_autonav)"/>
 
     <node pkg="rosbag" type="play" name="navigation" output="screen" args="--clock $(arg new_path)nav_success.bag" if="$(arg use_filebag)"/>
     <node pkg="rosbag" type="play" name="marvelmind" output="screen" args="--clock $(arg new_path)hedge_marvelmind.bag" if="$(arg use_filebag)"/>
